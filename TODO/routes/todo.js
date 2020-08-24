@@ -25,7 +25,7 @@ exports.list = function (req, res) {
             // create file function(json)
             fs.writeFile(
                 './todo_list.json', // file name
-                JSON.stringify(list), // stringify is js to JSON method
+                JSON.stringify(list), // stringify is JS to JSON method
                 function (err) { // handle errors
                     res.json(list);
                 }
@@ -33,3 +33,37 @@ exports.list = function (req, res) {
         }
     });
 };
+
+// add new TODO item to LIST
+exports.add = function (req, res) {
+    var todo = {
+        // basic TODO item structure
+        'contents': '',
+        'complete': false
+    };
+
+    // set new item's contents
+    todo.contents = req.body.contents;
+
+    // get old json file, and update it
+    fs.readFile(
+        './todo_list.json', {
+            'encoding': 'utf8'
+        },
+        function (err, data) {
+            // parse is JSON to JS method
+            data = JSON.parse(data);
+
+            // add items to end of list
+            data.list.push(todo);
+
+            // update json file
+            fs.writeFile(
+                './todo_list.json',
+                JSON.stringify(data),
+                function (err) {
+                    res.json(true);
+                }
+            );
+        })
+}
