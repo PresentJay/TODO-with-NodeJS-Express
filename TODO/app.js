@@ -37,10 +37,10 @@ app.configure("development", function () {
 
 // routing
 app.get("/", routes.index);
-app.get("/list", todo.list);
-app.post("/add", todo.add);
-app.post("/complete", todo.complete);
-app.post("/del", todo.del);
+app.get("/list", todo.list); // get TODO list that saved in webserver
+app.post("/add", todo.add); // add new TODO items to list
+app.post("/complete", todo.complete); // complete TODO item that is selected
+app.post("/del", todo.del); // delete TODO item that is selected
 
 // execute
 http.createServer(app).listen(app.get("port"), function () {
