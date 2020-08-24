@@ -94,3 +94,32 @@ exports.complete = function (req, res) {
         }
     )
 }
+
+// delete TODO item that is selected
+exports.del = function (req, res) {
+    // get old json file
+    fs.readFile(
+        './todo_list.json', {
+            'encoding': 'utf8'
+        },
+        function (err, data) {
+            // get data from json file(old)
+            data = JSON.parse(data);
+
+            // make seleted item null (delete)
+            data.list[req.body.index] = null;
+
+            // list validation (except null item)
+            data.list = data.list.filter(Boolean);
+
+            // update json file
+            fs.writeFile(
+                './todo_list.json',
+                JSON.stringify(data),
+                function (err) {
+                    res.json(true);
+                }
+            )
+        }
+    )
+}
