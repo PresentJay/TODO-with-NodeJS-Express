@@ -1,41 +1,48 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+/* 
+    Module dependencies.
+*/
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// importing module
+var express = require("express"),
+  routes = require("./routes"),
+  todo = require("./routes/todo"),
+  http = require("http"),
+  path = require("path");
 
+// create application
 var app = express();
+// application port
+var port = 3000;
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.configure(function () {
+  app.set("port", port); // port for web server
+  app.set("views", path.join(__dirname, "views")); // set template url
+  app.set("view engine", "ejs"); // set template engine
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.favicon());
+  app.use(express.logger("dev")); // record log
+  app.use(express.bodyParser()); // parse body from request
+  app.use(express.methodOverride()); // support old browser methods
+  app.use(app.router); // set routing
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+  // handle static resources
+  app.use(require("stylus").middleware(__dirname + "/public"));
+  app.use(express.static(path.join(__dirname, "public")));
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+app.configure("development", function () {
+  app.use(express.errorHandler());
 });
 
-module.exports = app;
+// routing
+app.get("/", routes.index);
+app.get("/list", todo.list);
+app.post("/add", todo.add);
+app.post("/complete", todo.complete);
+app.post("/del", todo.del);
+
+// execute
+http.createServer(app).listen(app.get("port"), function () {
+  console.log("Express server listening on port " + app.get("port"));
+});
