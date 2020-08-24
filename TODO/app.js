@@ -15,6 +15,7 @@ var app = express();
 var port = 3000;
 
 // view engine setup
+
 app.configure(function () {
   app.set("port", port); // port for web server
   app.set("views", path.join(__dirname, "views")); // set template url
