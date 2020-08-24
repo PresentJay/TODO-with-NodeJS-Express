@@ -22,4 +22,17 @@ $(document).ready(function () {
             $('tbody').html(trs);
         }
     })
+
+    get_list();
+
+    // when add button is clicked (POST method)
+    $('.form-inline button').click(function () {
+        $.ajax('/add', {
+            'method': 'POST',
+            'data': {
+                'contents': $('#new_todo').val()
+            },
+            'success': get_list
+        })
+    })
 })
