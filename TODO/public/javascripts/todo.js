@@ -35,4 +35,18 @@ $(document).ready(function () {
             'success': get_list
         })
     })
+
+    // when complete button is clicked (POST method)
+    $('.tbody').on('click', 'btn-success', function () {
+        $.ajax('/complete', {
+            'method': 'POST',
+            'data': {
+                'index': parseInt($(this).parent().siblings(':first').text()) - 1
+            },
+            'success': get_list
+        })
+    })
+
+    // when delete button is clicked (POST method)
+    // $('.')
 })
