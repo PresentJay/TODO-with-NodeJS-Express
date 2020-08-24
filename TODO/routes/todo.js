@@ -42,7 +42,7 @@ exports.add = function (req, res) {
         'complete': false
     };
 
-    // set new item's contents
+    // set new item's content
     todo.contents = req.body.contents;
 
     // get old json file, and update it
@@ -65,5 +65,32 @@ exports.add = function (req, res) {
                     res.json(true);
                 }
             );
-        })
+        }
+    );
+};
+
+// complete TODO item that is selected
+exports.complete = function (req, res) {
+    // get old json file
+    fs.readFile(
+        './todo_list.json', {
+            'encoding': 'utf8'
+        },
+        function (err, data) {
+            // get data from json file(old)
+            data = JSON.parse(data);
+
+            // select items from list(with index - that indicates selection), and change attribute(convert complete boolean)
+            data.list[req.body.index].complete = true;
+
+            // update json file
+            fs.writeFile(
+                './todo_list.json',
+                JSON.stringify(data),
+                function (err) {
+                    res.json(true);
+                }
+            );
+        }
+    )
 }
