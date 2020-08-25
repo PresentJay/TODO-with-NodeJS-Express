@@ -123,3 +123,8 @@ exports.del = function (req, res) {
         }
     )
 }
+
+// arrange 
+exports.arrange = function (req, res) {
+
+}

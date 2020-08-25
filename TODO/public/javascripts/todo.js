@@ -34,6 +34,14 @@ $(document).ready(function () {
 
     get_list();
 
+    $(".form-control").keydown(function (key) {
+        if (key.keyCode == 13) {
+            $(".form-inline button").click();
+            key.preventDefault();
+            self.focus()
+        }
+    })
+
     // when add button is clicked (POST method)
     $(".form-inline button").click(function () {
         $.ajax("/add", {
@@ -43,6 +51,8 @@ $(document).ready(function () {
             },
             success: get_list,
         });
+
+        $('#new_todo').val('').focus()
     });
 
     // when complete button is clicked (POST method)
