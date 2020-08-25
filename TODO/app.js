@@ -15,7 +15,6 @@ var app = express();
 var port = 3000;
 
 // view engine setup
-
 app.configure(function () {
   app.set("port", port); // port for web server
   app.set("views", path.join(__dirname, "views")); // set template url
@@ -40,6 +39,7 @@ app.configure("development", function () {
 app.get("/", routes.index);
 app.get("/list", todo.list); // get TODO list that saved in webserver
 app.post("/add", todo.add); // add new TODO items to list
+app.post("/arrange", todo.arrange);
 app.post("/complete", todo.complete); // complete TODO item that is selected
 app.post("/del", todo.del); // delete TODO item that is selected
 

@@ -124,7 +124,40 @@ exports.del = function (req, res) {
     )
 }
 
-// arrange 
+// arrange TODO list from uncompleted items to completed items
 exports.arrange = function (req, res) {
+    // check presence of TODO-LIST Json file
+    fs.exists('./todo_list.json', function (exists) {
+
+        // get old json file
+        fs.readFile(
+            './todo_list.json', {
+                'encoding': "utf8"
+            },
+            function (err, data) {
+                data = JSON.parse(data);
+
+                const oldlist = data.list;
+                const uncompleted = oldlist.filter(function (obj) {
+                    return obj['complete'] === false;
+                });
+                const completed = oldlist.filter(function (obj) {
+                    return obj['complete'] === true;
+                });
+
+                data.list = uncompleted;
+                for (item of completed) data.list.push(item);
+
+                // update json file
+                fs.writeFile(
+                    './todo_list.json',
+                    JSON.stringify(data),
+                    function (err) {
+                        res.json(true);
+                    }
+                )
+            }
+        )
+    });
 
 }
